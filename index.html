@@ -4,869 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio — ██████</title>
+    <title>Portfolio-Ujjal Mandal</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500&display=swap"
         rel="stylesheet">
-    <style>
-        *,
-        *::before,
-        *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box
-        }
-
-        :root {
-            --white: #e8eeff;
-            --black: #03050f;
-            --red: #2d8fff;
-            --blue: #2d8fff;
-            --blue2: #5b6ef5;
-            --blue3: #00c8ff;
-            --gold: #1a3a6a;
-            --dim: #0e1628;
-            --dim2: #162040;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden
-        }
-
-        body {
-            background: var(--black);
-            color: var(--white);
-            font-family: 'Outfit', sans-serif;
-            font-weight: 300;
-            cursor: none;
-            overflow-x: hidden;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(ellipse 80% 60% at 60% 20%, rgba(45, 143, 255, 0.07) 0%, transparent 60%),
-                radial-gradient(ellipse 60% 50% at 20% 80%, rgba(0, 200, 255, 0.05) 0%, transparent 55%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* ═══ CURSOR ═══ */
-        #cur {
-            position: fixed;
-            width: 8px;
-            height: 8px;
-            background: var(--blue3);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: width .2s, height .2s, background .2s;
-            box-shadow: 0 0 12px var(--blue3), 0 0 30px rgba(0, 200, 255, .4);
-        }
-
-        #cur2 {
-            position: fixed;
-            width: 0;
-            height: 0;
-            border: 1px solid rgba(45, 143, 255, .5);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9998;
-            transform: translate(-50%, -50%);
-            transition: width .5s cubic-bezier(.23, 1, .32, 1), height .5s cubic-bezier(.23, 1, .32, 1), border-color .3s;
-        }
-
-        body.hovering #cur {
-            width: 60px;
-            height: 60px;
-            background: rgba(45, 143, 255, .12);
-            box-shadow: 0 0 30px rgba(0, 200, 255, .3);
-        }
-
-        body.hovering #cur2 {
-            width: 80px;
-            height: 80px;
-            border-color: rgba(0, 200, 255, .8);
-        }
-
-        /* ═══ WEBGL BG ═══ */
-        #glcanvas {
-            position: fixed;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            display: block;
-        }
-
-        /* ═══ LOADING SCREEN ═══ */
-        #loader {
-            position: fixed;
-            inset: 0;
-            background: var(--black);
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            gap: 2rem;
-            transition: opacity .8s ease, visibility .8s ease;
-        }
-
-        #loader.gone {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .loader-num {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(5rem, 15vw, 12rem);
-            line-height: 1;
-            color: var(--white);
-            letter-spacing: -0.02em;
-        }
-
-        .loader-bar {
-            width: 200px;
-            height: 1px;
-            background: var(--dim);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .loader-fill {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            background: linear-gradient(90deg, var(--blue2), var(--blue3));
-            width: 0;
-            transition: width .05s linear;
-            box-shadow: 0 0 12px var(--blue3);
-        }
-
-        /* ═══ NAV ═══ */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            padding: 2rem 3rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
-            mix-blend-mode: difference;
-        }
-
-        .nav-logo {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.5rem;
-            letter-spacing: .1em;
-            color: var(--white);
-            text-decoration: none;
-        }
-
-        .nav-status {
-            display: flex;
-            align-items: center;
-            gap: .6rem;
-            font-size: .7rem;
-            letter-spacing: .15em;
-            text-transform: uppercase;
-            color: var(--white);
-            opacity: .6;
-        }
-
-        .status-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #4dff91;
-            animation: blink 2s ease infinite;
-        }
-
-        @keyframes blink {
-
-            0%,
-            100% {
-                opacity: 1
-            }
-
-            50% {
-                opacity: .2
-            }
-        }
-
-        /* ═══ HERO ═══ */
-        .hero {
-            position: relative;
-            z-index: 1;
-            min-height: 100vh;
-            display: flex;
-            align-items: flex-end;
-            padding: 0 3rem 5rem;
-            overflow: hidden;
-        }
-
-        .hero-title {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(5rem, 16vw, 18rem);
-            line-height: .88;
-            letter-spacing: -0.01em;
-            position: relative;
-            user-select: none;
-        }
-
-        .hero-title .line {
-            display: block;
-            overflow: hidden;
-        }
-
-        .hero-title .word {
-            display: inline-block;
-            transform: translateY(110%);
-            animation: slideUp .9s cubic-bezier(.16, 1, .3, 1) both;
-        }
-
-        .hero-title .line:nth-child(2) .word {
-            animation-delay: .12s
-        }
-
-        .hero-title .line:nth-child(3) .word {
-            animation-delay: .22s
-        }
-
-        .hero-title .stroke {
-            -webkit-text-stroke: 2px var(--white);
-            color: transparent;
-        }
-
-        .hero-title .red {
-            color: var(--blue3);
-            text-shadow: 0 0 40px rgba(0, 200, 255, .5);
-        }
-
-        .hero-meta {
-            position: absolute;
-            right: 3rem;
-            bottom: 5rem;
-            text-align: right;
-            opacity: 0;
-            animation: fadeIn .8s .8s ease both;
-        }
-
-        .hero-meta p {
-            font-size: .8rem;
-            line-height: 2;
-            color: rgba(245, 242, 235, .5);
-        }
-
-        .hero-meta strong {
-            color: var(--white);
-            font-weight: 400;
-        }
-
-        .hero-scroll {
-            position: absolute;
-            bottom: 3rem;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: .8rem;
-            opacity: 0;
-            animation: fadeIn 1s 1.2s ease both;
-        }
-
-        .scroll-text {
-            font-size: .6rem;
-            letter-spacing: .25em;
-            text-transform: uppercase;
-            color: rgba(245, 242, 235, .4);
-        }
-
-        .scroll-track {
-            width: 1px;
-            height: 60px;
-            background: rgba(255, 255, 255, .1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .scroll-thumb {
-            position: absolute;
-            top: -100%;
-            left: 0;
-            width: 100%;
-            height: 50%;
-            background: var(--blue3);
-            animation: scrollDown 2s ease infinite;
-        }
-
-        @keyframes scrollDown {
-            from {
-                top: -100%
-            }
-
-            to {
-                top: 200%
-            }
-        }
-
-        @keyframes slideUp {
-            from {
-                transform: translateY(110%)
-            }
-
-            to {
-                transform: translateY(0)
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px)
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0)
-            }
-        }
-
-        /* ═══ MARQUEE ═══ */
-        .marquee-wrap {
-            position: relative;
-            z-index: 1;
-            border-top: 1px solid var(--dim2);
-            border-bottom: 1px solid var(--dim2);
-            padding: .8rem 0;
-            overflow: hidden;
-            background: rgba(3, 5, 15, .9);
-        }
-
-        .marquee-track {
-            display: flex;
-            gap: 0;
-            white-space: nowrap;
-            animation: marquee 18s linear infinite;
-        }
-
-        .marquee-track:hover {
-            animation-play-state: paused
-        }
-
-        .marquee-item {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.4rem;
-            letter-spacing: .15em;
-            padding: 0 3rem;
-            color: rgba(232, 238, 255, .2);
-            flex-shrink: 0;
-        }
-
-        .marquee-item span {
-            color: var(--blue3);
-        }
-
-        @keyframes marquee {
-            from {
-                transform: translateX(0)
-            }
-
-            to {
-                transform: translateX(-50%)
-            }
-        }
-
-        /* ═══ WORK SECTION ═══ */
-        .section {
-            position: relative;
-            z-index: 1;
-            padding: 8rem 3rem;
-        }
-
-        .section-head {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 4rem;
-            border-bottom: 1px solid var(--dim2);
-            padding-bottom: 1.5rem;
-        }
-
-        .section-label {
-            font-size: .65rem;
-            letter-spacing: .25em;
-            text-transform: uppercase;
-            color: var(--blue3);
-            opacity: .7;
-        }
-
-        .section-count {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 5rem;
-            line-height: 1;
-            color: rgba(232, 238, 255, .05);
-            letter-spacing: -.02em;
-        }
-
-        /* PROJECT ROWS */
-        .project {
-            display: grid;
-            grid-template-columns: 60px 1fr auto;
-            align-items: center;
-            gap: 2rem;
-            padding: 2rem 0;
-            border-bottom: 1px solid var(--dim2);
-            cursor: none;
-            transition: border-color .3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, transparent, rgba(45, 143, 255, .06), transparent);
-            transform: translateX(-100%);
-            transition: transform .6s ease;
-        }
-
-        .project:hover::before {
-            transform: translateX(100%);
-        }
-
-        .project:hover {
-            border-color: rgba(45, 143, 255, .35);
-        }
-
-        .proj-num {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1rem;
-            color: rgba(232, 238, 255, .2);
-            letter-spacing: .1em;
-        }
-
-        .proj-info {}
-
-        .proj-title {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(2rem, 4vw, 4rem);
-            letter-spacing: -.01em;
-            line-height: 1;
-            transition: color .3s;
-        }
-
-        .project:hover .proj-title {
-            color: var(--blue3);
-        }
-
-        .proj-tags {
-            display: flex;
-            gap: .6rem;
-            margin-top: .5rem;
-            flex-wrap: wrap;
-        }
-
-        .proj-tag {
-            font-size: .6rem;
-            letter-spacing: .15em;
-            text-transform: uppercase;
-            padding: .25rem .7rem;
-            border: 1px solid var(--dim2);
-            color: rgba(232, 238, 255, .35);
-            border-radius: 2px;
-            transition: border-color .3s, color .3s;
-        }
-
-        .project:hover .proj-tag {
-            border-color: rgba(45, 143, 255, .35);
-            color: rgba(0, 200, 255, .8);
-        }
-
-        .proj-arrow {
-            font-size: 1.5rem;
-            color: rgba(232, 238, 255, .2);
-            transition: transform .4s cubic-bezier(.23, 1, .32, 1), color .3s;
-        }
-
-        .project:hover .proj-arrow {
-            transform: translate(8px, -8px) rotate(-45deg);
-            color: var(--blue3);
-        }
-
-        /* HOVER IMAGE PREVIEW */
-        .proj-preview {
-            position: fixed;
-            pointer-events: none;
-            z-index: 50;
-            width: 300px;
-            height: 200px;
-            opacity: 0;
-            transform: scale(.8) rotate(-2deg);
-            transition: opacity .3s, transform .4s cubic-bezier(.23, 1, .32, 1);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .proj-preview.show {
-            opacity: 1;
-            transform: scale(1) rotate(1deg);
-        }
-
-        .proj-preview canvas {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-
-        /* ═══ SKILLS ═══ */
-        .skills-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6rem;
-            align-items: start;
-        }
-
-        .skills-big {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(3rem, 6vw, 6rem);
-            line-height: .95;
-            letter-spacing: -.02em;
-            margin-bottom: 2rem;
-        }
-
-        .skills-big em {
-            font-style: normal;
-            color: var(--blue3);
-            text-shadow: 0 0 30px rgba(0, 200, 255, .4);
-        }
-
-        /* NEW STYLISH SKILL BARS */
-        .skill-bar {
-            margin-bottom: 2.2rem;
-            position: relative;
-        }
-
-        .skill-bar-head {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: .8rem;
-            font-size: .72rem;
-            letter-spacing: .08em;
-        }
-
-        .skill-name-text {
-            color: rgba(232, 238, 255, .8);
-            font-weight: 400;
-        }
-
-        .skill-bar-pct {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.1rem;
-            letter-spacing: .05em;
-            color: var(--blue3);
-            text-shadow: 0 0 16px rgba(0, 200, 255, .6);
-        }
-
-        /* Segmented block track */
-        .skill-track {
-            height: 10px;
-            background: transparent;
-            position: relative;
-            display: flex;
-            gap: 3px;
-            align-items: center;
-        }
-
-        .skill-segment {
-            flex: 1;
-            height: 10px;
-            border-radius: 2px;
-            background: rgba(45, 143, 255, .08);
-            border: 1px solid rgba(45, 143, 255, .12);
-            position: relative;
-            overflow: hidden;
-            transition: background .3s, border-color .3s, transform .2s;
-        }
-
-        .skill-segment.lit {
-            background: linear-gradient(90deg, var(--blue2), var(--blue3));
-            border-color: rgba(0, 200, 255, .4);
-            box-shadow: 0 0 6px rgba(0, 200, 255, .35), inset 0 1px 0 rgba(255, 255, 255, .15);
-        }
-
-        .skill-segment.lit::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, .18) 50%, transparent 100%);
-            animation: shimmer 2.5s ease infinite;
-            animation-delay: var(--sd, 0s);
-        }
-
-        @keyframes shimmer {
-            0% {
-                transform: translateX(-100%)
-            }
-
-            100% {
-                transform: translateX(200%)
-            }
-        }
-
-        /* Outer glow line under segments */
-        .skill-glow-line {
-            position: absolute;
-            bottom: -6px;
-            left: 0;
-            height: 1px;
-            width: 0;
-            background: linear-gradient(90deg, var(--blue2), var(--blue3), transparent);
-            transition: width 1.4s cubic-bezier(.23, 1, .32, 1);
-            box-shadow: 0 0 8px var(--blue3);
-            border-radius: 2px;
-        }
-
-        /* Dot at end of bar */
-        .skill-dot {
-            position: absolute;
-            bottom: -10px;
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: var(--blue3);
-            box-shadow: 0 0 10px var(--blue3), 0 0 20px rgba(0, 200, 255, .5);
-            left: 0;
-            transition: left 1.4s cubic-bezier(.23, 1, .32, 1);
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: left 1.4s cubic-bezier(.23, 1, .32, 1), opacity .3s .2s;
-        }
-
-        .skill-bar:hover .skill-segment.lit {
-            box-shadow: 0 0 10px rgba(0, 200, 255, .6), inset 0 1px 0 rgba(255, 255, 255, .2);
-        }
-
-        .skill-bar:hover .skill-segment.lit:last-of-type {
-            transform: scaleY(1.3);
-        }
-
-        /* ═══ ABOUT ═══ */
-        .about-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6rem;
-        }
-
-        .about-img {
-            position: relative;
-            aspect-ratio: 3/4;
-            max-height: 600px;
-            overflow: hidden;
-        }
-
-        .about-img canvas {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-
-        .about-img-frame {
-            position: absolute;
-            inset: 0;
-            border: 1px solid rgba(45, 143, 255, .3);
-            transform: translate(12px, 12px);
-            pointer-events: none;
-            border-radius: 2px;
-        }
-
-        .about-content {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .about-quote {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(2.5rem, 4vw, 4rem);
-            line-height: 1;
-            letter-spacing: -.02em;
-            margin-bottom: 2.5rem;
-        }
-
-        .about-quote span {
-            color: var(--blue3);
-            text-shadow: 0 0 25px rgba(0, 200, 255, .4);
-        }
-
-        .about-body {
-            color: rgba(232, 238, 255, .45);
-            font-size: .9rem;
-            line-height: 1.9;
-            margin-bottom: 2rem;
-        }
-
-        .about-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            border-top: 1px solid var(--dim2);
-            padding-top: 2rem;
-            margin-top: 1rem;
-        }
-
-        .stat-val {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 2.5rem;
-            color: var(--blue3);
-            letter-spacing: -.02em;
-            text-shadow: 0 0 20px rgba(0, 200, 255, .4);
-        }
-
-        .stat-label {
-            font-size: .65rem;
-            letter-spacing: .15em;
-            text-transform: uppercase;
-            color: rgba(232, 238, 255, .3);
-        }
-
-        /* ═══ CONTACT ═══ */
-        .contact-hero {
-            text-align: center;
-            padding: 8rem 3rem;
-            position: relative;
-            z-index: 1;
-            border-top: 1px solid var(--dim2);
-        }
-
-        .contact-pre {
-            font-size: .65rem;
-            letter-spacing: .3em;
-            text-transform: uppercase;
-            color: rgba(232, 238, 255, .3);
-            margin-bottom: 2rem;
-        }
-
-        .contact-big {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(3rem, 10vw, 11rem);
-            line-height: .9;
-            letter-spacing: -.02em;
-            margin-bottom: 3rem;
-            cursor: none;
-            display: inline-block;
-            transition: color .3s, text-shadow .3s;
-            text-decoration: none;
-            color: var(--white);
-        }
-
-        .contact-big:hover {
-            color: var(--blue3);
-            text-shadow: 0 0 60px rgba(0, 200, 255, .35);
-        }
-
-        .contact-links {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .clink {
-            font-size: .7rem;
-            letter-spacing: .15em;
-            text-transform: uppercase;
-            color: rgba(232, 238, 255, .4);
-            text-decoration: none;
-            border-bottom: 1px solid transparent;
-            transition: color .3s, border-color .3s;
-            padding-bottom: .2rem;
-            cursor: none;
-        }
-
-        .clink:hover {
-            color: var(--white);
-            border-color: var(--blue3);
-        }
-
-        /* ═══ FOOTER ═══ */
-        footer {
-            position: relative;
-            z-index: 1;
-            border-top: 1px solid var(--dim2);
-            padding: 1.5rem 3rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: .65rem;
-            letter-spacing: .1em;
-            text-transform: uppercase;
-            color: rgba(232, 238, 255, .18);
-        }
-
-        /* ═══ REVEAL ═══ */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity .9s ease, transform .9s cubic-bezier(.23, 1, .32, 1);
-        }
-
-        .reveal.visible {
-            opacity: 1;
-            transform: none;
-        }
-
-        @media(max-width:768px) {
-            nav {
-                padding: 1.5rem;
-            }
-
-            .hero {
-                padding: 0 1.5rem 4rem;
-            }
-
-            .section {
-                padding: 5rem 1.5rem;
-            }
-
-            .section-head {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
-            }
-
-            .project {
-                grid-template-columns: 40px 1fr auto;
-                gap: 1rem;
-            }
-
-            .skills-layout,
-            .about-layout {
-                grid-template-columns: 1fr;
-                gap: 3rem;
-            }
-
-            .contact-hero {
-                padding: 5rem 1.5rem;
-            }
-
-            footer {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-        }
-    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -891,7 +34,7 @@
 
     <!-- NAV -->
     <nav>
-        <a href="#" class="nav-logo">AX</a>
+        <a href="#" class="nav-logo">UM</a>
         <div class="nav-status">
             <div class="status-dot"></div>
             Available for projects
@@ -902,15 +45,15 @@
     <section class="hero" id="home">
         <div>
             <h1 class="hero-title">
-                <span class="line"><span class="word">CRAFTING</span></span>
-                <span class="line"><span class="word stroke">DIGITAL</span></span>
-                <span class="line"><span class="word red">WORLDS</span></span>
+                <span class="line"><span class="word">$WHOAMI</span></span>
+                <span class="line"><span class="word stroke">UJJAL</span></span>
+                <span class="line"><span class="word red">MANDAL</span></span>
             </h1>
         </div>
         <div class="hero-meta">
             <p>Creative Developer</p>
-            <p><strong>Based in New York</strong></p>
-            <p>Open for freelance — <strong>2025</strong></p>
+            <p><strong>Based in Kolkata</strong></p>
+            <p>Open for freelance — <strong>2026</strong></p>
         </div>
         <div class="hero-scroll">
             <div class="scroll-track">
@@ -940,12 +83,17 @@
         <div class="project reveal" data-proj="0">
             <div class="proj-num">01</div>
             <div class="proj-info">
-                <div class="proj-title">NEBULA — 3D Commerce</div>
+                <div class="proj-title-wrap">
+                    <div class="proj-title">Cyberkit</div>
+                    <a href="https://github.com/ujjal-dev/CyberKit" class="proj-github" target="_blank" rel="noopener">GitHub ↗</a>
+                    <a href="https://cyberkits.netlify.app/" class="proj-github" target="_blank" rel="noopener">Live ↗</a>
+                </div>
+                <div class="proj-desc">A CLI tool for ethical hacking and penetration testingThe Cyber CLI Toolkit is a web-based platform designed to simplify the usage of popular cybersecurity command-line tools such as SQLmap, Hydra, FFUF, Gobuster, Nikto, and more.</div>
                 <div class="proj-tags">
-                    <span class="proj-tag">Three.js</span>
-                    <span class="proj-tag">WebGL</span>
-                    <span class="proj-tag">React</span>
-                    <span class="proj-tag">E-Commerce</span>
+                    <span class="proj-tag">All tools</span>
+                    <span class="proj-tag">CLi</span>
+                    <span class="proj-tag">linux</span>
+                    <span class="proj-tag">easy</span>
                 </div>
             </div>
             <div class="proj-arrow">↗</div>
@@ -954,7 +102,12 @@
         <div class="project reveal" data-proj="1">
             <div class="proj-num">02</div>
             <div class="proj-info">
-                <div class="proj-title">AXIOM — Data Platform</div>
+                <div class="proj-title-wrap">
+                    <div class="proj-title">AXIOM — Data Platform</div>
+                    <a href="https://github.com/axstudio/axiom" class="proj-github" target="_blank" rel="noopener">GitHub ↗</a>
+                     <a href="https://cyberkits.netlify.app/" class="proj-github" target="_blank" rel="noopener">Live ↗</a>
+                </div>
+                <div class="proj-desc">A real-time metrics and massive dataset visualization dashboard powering analytical telemetry platforms.</div>
                 <div class="proj-tags">
                     <span class="proj-tag">D3.js</span>
                     <span class="proj-tag">WebSockets</span>
@@ -967,7 +120,12 @@
         <div class="project reveal" data-proj="2">
             <div class="proj-num">03</div>
             <div class="proj-info">
-                <div class="proj-title">PULSE — Music App</div>
+                <div class="proj-title-wrap">
+                    <div class="proj-title"></div>
+                    <a href="https://github.com/axstudio/pulse" class="proj-github" target="_blank" rel="noopener">GitHub ↗</a>
+                     <a href="https://cyberkits.netlify.app/" class="proj-github" target="_blank" rel="noopener">Live ↗</a>
+                </div>
+                <div class="proj-desc">Generative audio-reactive visuals mapping frequency arrays to particle colors matching tempo dynamically.</div>
                 <div class="proj-tags">
                     <span class="proj-tag">Web Audio</span>
                     <span class="proj-tag">Canvas</span>
@@ -980,11 +138,16 @@
         <div class="project reveal" data-proj="3">
             <div class="proj-num">04</div>
             <div class="proj-info">
-                <div class="proj-title">FORMA — Brand Identity</div>
+                <div class="proj-title-wrap">
+                    <div class="proj-title">Nmap Commands</div>
+                    <a href="https://github.com/ujjal-dev/nmap-commands" class="proj-github" target="_blank" rel="noopener">GitHub ↗</a>
+                     <a href="https://nmapcommands.netlify.app/" class="proj-github" target="_blank" rel="noopener">Live ↗</a>
+                </div>
+                <div class="proj-desc">A collection of nmap commands for ethical hacking and penetration testing.</div>
                 <div class="proj-tags">
-                    <span class="proj-tag">Motion</span>
-                    <span class="proj-tag">Identity</span>
-                    <span class="proj-tag">AI-Assisted</span>
+                    <span class="proj-tag">Nmap</span>
+                    <span class="proj-tag">Ethical Hacking</span>
+                    <span class="proj-tag">Penetration Testing</span>
                 </div>
             </div>
             <div class="proj-arrow">↗</div>
@@ -1006,28 +169,28 @@
             </div>
             <div class="reveal" style="padding-top:3rem;" id="skillBarsContainer">
                 <div class="skill-bar" data-pct="95">
-                    <div class="skill-bar-head"><span class="skill-name-text">Three.js / WebGL</span><span
+                    <div class="skill-bar-head"><span class="skill-name-text">Html / Css / Js </span><span
                             class="skill-bar-pct">95%</span></div>
                     <div class="skill-track" data-segments="20" data-filled="19"></div>
                     <div class="skill-glow-line"></div>
                     <div class="skill-dot"></div>
                 </div>
                 <div class="skill-bar" data-pct="92">
-                    <div class="skill-bar-head"><span class="skill-name-text">React / Next.js</span><span
+                    <div class="skill-bar-head"><span class="skill-name-text">linux</span><span
                             class="skill-bar-pct">92%</span></div>
                     <div class="skill-track" data-segments="20" data-filled="18"></div>
                     <div class="skill-glow-line"></div>
                     <div class="skill-dot"></div>
                 </div>
                 <div class="skill-bar" data-pct="88">
-                    <div class="skill-bar-head"><span class="skill-name-text">GLSL Shaders</span><span
+                    <div class="skill-bar-head"><span class="skill-name-text">Scanning </span><span
                             class="skill-bar-pct">88%</span></div>
                     <div class="skill-track" data-segments="20" data-filled="18"></div>
                     <div class="skill-glow-line"></div>
                     <div class="skill-dot"></div>
                 </div>
                 <div class="skill-bar" data-pct="94">
-                    <div class="skill-bar-head"><span class="skill-name-text">Motion / GSAP</span><span
+                    <div class="skill-bar-head"><span class="skill-name-text">Web security</span><span
                             class="skill-bar-pct">94%</span></div>
                     <div class="skill-track" data-segments="20" data-filled="19"></div>
                     <div class="skill-glow-line"></div>
@@ -1041,7 +204,7 @@
                     <div class="skill-dot"></div>
                 </div>
                 <div class="skill-bar" data-pct="80">
-                    <div class="skill-bar-head"><span class="skill-name-text">Node / Supabase</span><span
+                    <div class="skill-bar-head"><span class="skill-name-text">Splunk</span><span
                             class="skill-bar-pct">80%</span></div>
                     <div class="skill-track" data-segments="20" data-filled="16"></div>
                     <div class="skill-glow-line"></div>
@@ -1064,22 +227,27 @@
                 <div class="section-label" style="margin-bottom:1.5rem;">About</div>
                 <div class="about-quote">I BUILD<br>THINGS THAT<br><span>FEEL ALIVE</span></div>
                 <p class="about-body">
-                    6 years of pushing pixels past their limits. I live in the overlap between engineering and artistry
-                    — where a WebGL shader becomes a painting, and a React component becomes an experience.<br><br>
-                    Worked with agencies, startups, and brands who refuse to be ordinary. Now taking on select projects
-                    that deserve something extraordinary.
+                    I am Ujjal Mandal, an undergraduate student at Haldia Institute of Technology pursuing a degree in Chemical Engineering. 
+                    Alongside my academic journey, I am actively developing my passion for technology as a full-stack developer and
+                    cybersecurity enthusiast. 
+
+                    I enjoy working with Linux-based environments, exploring system-level operations,
+                    and building secure web applications. My focus is not only on developing functional web solutions
+                    but also on implementing security best practices to make applications more resilient and reliable. 
+                    I believe that understanding both development and security is essential in today’s technology-driven world.
+
                 </p>
                 <div class="about-stats">
                     <div>
-                        <div class="stat-val">6+</div>
+                        <div class="stat-val">1+</div>
                         <div class="stat-label">Years</div>
                     </div>
                     <div>
-                        <div class="stat-val">80+</div>
+                        <div class="stat-val">20+</div>
                         <div class="stat-label">Projects</div>
                     </div>
                     <div>
-                        <div class="stat-val">12</div>
+                        <div class="stat-val">badge</div>
                         <div class="stat-label">Awards</div>
                     </div>
                 </div>
@@ -1091,438 +259,25 @@
     <div class="contact-hero" id="contact">
         <div class="contact-pre reveal">Ready to collaborate?</div>
         <div class="reveal">
-            <a href="mailto:hello@ax.studio" class="contact-big">LET'S<br>TALK</a>
+            <a href="mailto:ujjalmandal8353@gmail.com" class="contact-big">LET'S<br>TALK</a>
         </div>
         <div class="contact-links reveal">
-            <a href="#" class="clink">GitHub</a>
-            <a href="#" class="clink">Twitter</a>
-            <a href="#" class="clink">LinkedIn</a>
-            <a href="#" class="clink">Dribbble</a>
-            <a href="#" class="clink">Download CV</a>
+            <a href="https://github.com/ujjal-dev" class="clink" target="_blank">GitHub</a>
+            <a href="https://tryhackme.com/p/Ujjal04" class="clink" target="_blank">Tryhackme</a>
+            <a href="https:/www.linkedin.com/in/ujjalmandal07" class="clink" target="_blank">LinkedIn</a>
+            <a href="#" class="clink">HackerOne</a>
+            <a href="https://drive.google.com/drive/folders/1Hys3Pg3xWvVRoWYzBmVc63f2Pxw6KiBP?usp=sharing" class="clink" target="_blank">Download CV</a>
         </div>
     </div>
 
     <footer>
-        <span>© 2025 AX Studio</span>
-        <span>Available · New York</span>
+        <span>© 2026 Ujjal Mandal</span>
+        <span>Available · Kolkata</span>
         <span>Crafted in code</span>
     </footer>
 
-    <script>
-        // ════════════════════════════
-        // LOADER
-        // ════════════════════════════
-        let progress = 0;
-        const loaderNum = document.getElementById('loaderNum');
-        const loaderFill = document.getElementById('loaderFill');
-        const loader = document.getElementById('loader');
+    <script src="script.js">
 
-        const loadInterval = setInterval(() => {
-            progress += Math.random() * 12 + 3;
-            if (progress >= 100) { progress = 100; clearInterval(loadInterval); setTimeout(hideLoader, 400); }
-            loaderNum.textContent = Math.floor(progress);
-            loaderFill.style.width = progress + '%';
-        }, 80);
-
-        function hideLoader() {
-            loader.classList.add('gone');
-            initAll();
-        }
-
-        // ════════════════════════════
-        // WEBGL BACKGROUND — Plasma shader
-        // ════════════════════════════
-        function initWebGL() {
-            const canvas = document.getElementById('glcanvas');
-            const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-            if (!gl) return;
-
-            function resize() { canvas.width = innerWidth; canvas.height = innerHeight; gl.viewport(0, 0, canvas.width, canvas.height); }
-            resize(); window.addEventListener('resize', resize);
-
-            const vs = `attribute vec2 a;void main(){gl_Position=vec4(a,0,1);}`;
-            const fs = `
-  precision mediump float;
-  uniform float u_time;
-  uniform vec2 u_res;
-  uniform vec2 u_mouse;
-
-  float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
-  float noise(vec2 p){
-    vec2 i=floor(p),f=fract(p);
-    f=f*f*(3.0-2.0*f);
-    return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),
-               mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x),f.y);
-  }
-  float fbm(vec2 p){
-    float v=0.;float a=.5;
-    for(int i=0;i<5;i++){v+=a*noise(p);p*=2.;a*=.5;}
-    return v;
-  }
-
-  void main(){
-    vec2 uv=(gl_FragCoord.xy/u_res)*2.-1.;
-    uv.x*=u_res.x/u_res.y;
-    vec2 m=(u_mouse/u_res)*2.-1.;
-    m.x*=u_res.x/u_res.y;
-
-    float t=u_time*.25;
-    vec2 q=vec2(fbm(uv+t*.1),fbm(uv+vec2(1.7,9.2)+t*.08));
-    vec2 r=vec2(fbm(uv+2.*q+vec2(1.7,9.2)+t*.05),fbm(uv+2.*q+vec2(8.3,2.8)+t*.04));
-    float f=fbm(uv+2.*r);
-
-    float mouseDist=length(uv-m);
-    float mouseInfluence=smoothstep(.9,0.,mouseDist)*.18;
-    f+=mouseInfluence;
-
-    vec3 deep=vec3(0.01,0.02,0.06);
-    vec3 mid=vec3(0.03,0.08,0.22);
-    vec3 bright=vec3(0.05,0.40,0.85);
-    vec3 cyan=vec3(0.0,0.75,1.0);
-
-    vec3 col=mix(deep,mid,clamp(f*2.,0.,1.));
-    col=mix(col,bright,clamp((f-.3)*3.,0.,1.));
-    col=mix(col,cyan,clamp((f-.55)*6.,0.,1.));
-    col=mix(col,deep,clamp(length(q)*.7,0.,1.));
-
-    float vignette=1.-smoothstep(.4,1.2,length(uv*.7));
-    col*=vignette;
-    col*=.9;
-
-    gl_FragColor=vec4(col,1);
-  }`;
-
-            function compile(type, src) {
-                const s = gl.createShader(type);
-                gl.shaderSource(s, src); gl.compileShader(s); return s;
-            }
-            const prog = gl.createProgram();
-            gl.attachShader(prog, compile(gl.VERTEX_SHADER, vs));
-            gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, fs));
-            gl.linkProgram(prog); gl.useProgram(prog);
-
-            const buf = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
-            const aLoc = gl.getAttribLocation(prog, 'a');
-            gl.enableVertexAttribArray(aLoc);
-            gl.vertexAttribPointer(aLoc, 2, gl.FLOAT, false, 0, 0);
-
-            const uTime = gl.getUniformLocation(prog, 'u_time');
-            const uRes = gl.getUniformLocation(prog, 'u_res');
-            const uMouse = gl.getUniformLocation(prog, 'u_mouse');
-
-            let mx = innerWidth / 2, my = innerHeight / 2;
-            document.addEventListener('mousemove', e => { mx = e.clientX; my = innerHeight - e.clientY; });
-
-            let start = Date.now();
-            function frame() {
-                const t = (Date.now() - start) / 1000;
-                gl.uniform1f(uTime, t);
-                gl.uniform2f(uRes, canvas.width, canvas.height);
-                gl.uniform2f(uMouse, mx, my);
-                gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-                requestAnimationFrame(frame);
-            }
-            frame();
-        }
-
-        // ════════════════════════════
-        // CURSOR
-        // ════════════════════════════
-        function initCursor() {
-            const cur = document.getElementById('cur');
-            const cur2 = document.getElementById('cur2');
-            let cx = 0, cy = 0, tx = 0, ty = 0;
-
-            document.addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; cur.style.left = tx + 'px'; cur.style.top = ty + 'px'; });
-
-            const hoverEls = document.querySelectorAll('a, .project, button');
-            hoverEls.forEach(el => {
-                el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
-                el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
-            });
-
-            (function animRing() {
-                cx += (tx - cx) * .1; cy += (ty - cy) * .1;
-                cur2.style.left = cx + 'px'; cur2.style.top = cy + 'px';
-                requestAnimationFrame(animRing);
-            })();
-        }
-
-        // ════════════════════════════
-        // MARQUEE
-        // ════════════════════════════
-        function initMarquee() {
-            const items = ['3D DEVELOPMENT', 'WEB DESIGN', 'CREATIVE CODE', 'MOTION DESIGN', 'UI / UX', 'WEBGL', 'GSAP', 'THREE.JS', 'NEXTJS', 'OPEN TO WORK'];
-            const track = document.getElementById('marqueeTrack');
-            const doubled = [...items, ...items, ...items, ...items];
-            doubled.forEach((item, i) => {
-                const el = document.createElement('span');
-                el.className = 'marquee-item';
-                el.innerHTML = i % 3 === 1 ? `<span>✦</span> ${item}` : item;
-                track.appendChild(el);
-            });
-        }
-
-        // ════════════════════════════
-        // PROJECT HOVER PREVIEWS
-        // ════════════════════════════
-        function initPreviews() {
-            const preview = document.getElementById('preview');
-            const pc = document.getElementById('previewCanvas');
-            const pctx = pc.getContext('2d');
-            pc.width = 300; pc.height = 200;
-
-            const colors = [
-                ['#ff2d2d', '#ff8c00'],
-                ['#2d8cff', '#7b2dff'],
-                ['#ff2daa', '#ff2d2d'],
-                ['#2dffa0', '#2d8cff'],
-            ];
-
-            let animFrame, currentProj = -1;
-
-            function drawPreview(idx, t) {
-                const [c1, c2] = colors[idx % colors.length];
-                pctx.clearRect(0, 0, 300, 200);
-
-                const grad = pctx.createLinearGradient(0, 0, 300, 200);
-                grad.addColorStop(0, '#0d0d18');
-                grad.addColorStop(1, '#111120');
-                pctx.fillStyle = grad;
-                pctx.fillRect(0, 0, 300, 200);
-
-                // Grid
-                pctx.strokeStyle = 'rgba(255,255,255,0.04)';
-                pctx.lineWidth = 1;
-                for (let x = 0; x < 300; x += 30) { pctx.beginPath(); pctx.moveTo(x, 0); pctx.lineTo(x, 200); pctx.stroke(); }
-                for (let y = 0; y < 200; y += 30) { pctx.beginPath(); pctx.moveTo(0, y); pctx.lineTo(300, y); pctx.stroke(); }
-
-                // Animated shapes
-                pctx.save();
-                pctx.translate(150, 100);
-                for (let i = 0; i < 6; i++) {
-                    const a = t * .8 + i * (Math.PI * 2 / 6);
-                    const r = 40 + i * 10 + Math.sin(t + i) * 8;
-                    const x = Math.cos(a) * r, y = Math.sin(a) * r;
-                    const g2 = pctx.createRadialGradient(x, y, 0, x, y, 15);
-                    g2.addColorStop(0, c1 + 'cc');
-                    g2.addColorStop(1, 'transparent');
-                    pctx.fillStyle = g2;
-                    pctx.beginPath(); pctx.arc(x, y, 12, 0, Math.PI * 2); pctx.fill();
-                }
-                // Center glow
-                const cg = pctx.createRadialGradient(0, 0, 0, 0, 0, 60);
-                cg.addColorStop(0, c2 + '44');
-                cg.addColorStop(1, 'transparent');
-                pctx.fillStyle = cg;
-                pctx.beginPath(); pctx.arc(0, 0, 60, 0, Math.PI * 2); pctx.fill();
-                pctx.restore();
-
-                // Label
-                pctx.fillStyle = 'rgba(255,255,255,0.6)';
-                pctx.font = '600 11px Outfit';
-                pctx.letterSpacing = '2px';
-                pctx.fillText(['NEBULA', 'AXIOM', 'PULSE', 'FORMA'][idx] || 'PROJECT', 16, 180);
-            }
-
-            let t2 = 0;
-            document.querySelectorAll('.project').forEach(proj => {
-                const idx = parseInt(proj.dataset.proj);
-                proj.addEventListener('mouseenter', e => {
-                    currentProj = idx;
-                    preview.classList.add('show');
-                    cancelAnimationFrame(animFrame);
-                    (function anim() {
-                        t2 += 0.04;
-                        drawPreview(currentProj, t2);
-                        animFrame = requestAnimationFrame(anim);
-                    })();
-                });
-                proj.addEventListener('mouseleave', () => {
-                    preview.classList.remove('show');
-                    currentProj = -1;
-                    cancelAnimationFrame(animFrame);
-                });
-                proj.addEventListener('mousemove', e => {
-                    preview.style.left = (e.clientX + 20) + 'px';
-                    preview.style.top = (e.clientY - 100) + 'px';
-                });
-            });
-        }
-
-        // ════════════════════════════
-        // ABOUT CANVAS — fluid art
-        // ════════════════════════════
-        function initAbout() {
-            const canvas = document.getElementById('aboutCanvas');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            const par = canvas.parentElement;
-            function resize() { canvas.width = par.offsetWidth; canvas.height = par.offsetHeight; }
-            resize();
-            new ResizeObserver(resize).observe(par);
-
-            let t = 0;
-            function draw() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                const W = canvas.width, H = canvas.height;
-                t += 0.012;
-
-                // Dark bg
-                ctx.fillStyle = '#03050f';
-                ctx.fillRect(0, 0, W, H);
-
-                // Flowing bands — blue palette
-                for (let i = 0; i < 8; i++) {
-                    const phase = i * (Math.PI * 2 / 8) + t;
-                    ctx.beginPath();
-                    ctx.moveTo(0, H);
-                    for (let x = 0; x <= W; x += 4) {
-                        const y = H * .3 + H * .4 * Math.sin(x * .006 + phase) + H * .1 * Math.sin(x * .012 + t * 1.3 + i);
-                        if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-                    }
-                    ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
-                    const g = ctx.createLinearGradient(0, 0, W, 0);
-                    g.addColorStop(0, `rgba(${20 + i * 8},${60 + i * 20},255,${0.04 + i * 0.018})`);
-                    g.addColorStop(.5, `rgba(0,${150 + i * 12},255,${0.03 + i * 0.012})`);
-                    g.addColorStop(1, `rgba(${20 + i * 8},${60 + i * 20},255,${0.04 + i * 0.018})`);
-                    ctx.fillStyle = g;
-                    ctx.fill();
-                }
-
-                // Scanlines
-                for (let y = 0; y < H; y += 4) {
-                    ctx.fillStyle = 'rgba(0,0,0,0.06)';
-                    ctx.fillRect(0, y, W, 1);
-                }
-
-                // Blue dot accent
-                const dotX = W * .6 + Math.sin(t * .5) * W * .1;
-                const dotY = H * .3 + Math.cos(t * .4) * H * .1;
-                const dg = ctx.createRadialGradient(dotX, dotY, 0, dotX, dotY, 90);
-                dg.addColorStop(0, 'rgba(0,200,255,0.5)');
-                dg.addColorStop(.5, 'rgba(45,143,255,0.2)');
-                dg.addColorStop(1, 'transparent');
-                ctx.fillStyle = dg; ctx.beginPath(); ctx.arc(dotX, dotY, 90, 0, Math.PI * 2); ctx.fill();
-
-                // Second smaller accent
-                const d2x = W * .25 + Math.cos(t * .3) * W * .08;
-                const d2y = H * .6 + Math.sin(t * .5) * H * .08;
-                const dg2 = ctx.createRadialGradient(d2x, d2y, 0, d2x, d2y, 50);
-                dg2.addColorStop(0, 'rgba(91,110,245,0.35)');
-                dg2.addColorStop(1, 'transparent');
-                ctx.fillStyle = dg2; ctx.beginPath(); ctx.arc(d2x, d2y, 50, 0, Math.PI * 2); ctx.fill();
-
-                // Grid overlay
-                ctx.strokeStyle = 'rgba(45,143,255,0.04)'; ctx.lineWidth = 1;
-                for (let x = 0; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
-                for (let y = 0; y < H; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
-
-                requestAnimationFrame(draw);
-            }
-            draw();
-        }
-
-        // ════════════════════════════
-        // SKILL BARS — segmented
-        // ════════════════════════════
-        function initSkillBars() {
-            // Build segments
-            document.querySelectorAll('.skill-track[data-segments]').forEach(track => {
-                const total = parseInt(track.dataset.segments);
-                const filled = parseInt(track.dataset.filled);
-                for (let i = 0; i < total; i++) {
-                    const seg = document.createElement('div');
-                    seg.className = 'skill-segment';
-                    seg.dataset.idx = i;
-                    seg.dataset.filled = i < filled ? '1' : '0';
-                    seg.style.setProperty('--sd', (i * 0.12) + 's');
-                    track.appendChild(seg);
-                }
-            });
-
-            // Animate on scroll
-            const obs = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (!entry.isIntersecting) return;
-                    const bars = entry.target.querySelectorAll('.skill-bar');
-                    bars.forEach((bar, bi) => {
-                        const track = bar.querySelector('.skill-track');
-                        const glowLine = bar.querySelector('.skill-glow-line');
-                        const dot = bar.querySelector('.skill-dot');
-                        const pct = parseInt(bar.dataset.pct) / 100;
-                        const segs = track.querySelectorAll('.skill-segment');
-                        const filledCount = parseInt(track.dataset.filled);
-
-                        segs.forEach((seg, si) => {
-                            if (seg.dataset.filled === '1') {
-                                setTimeout(() => {
-                                    seg.classList.add('lit');
-                                }, bi * 120 + si * 55);
-                            }
-                        });
-
-                        // Glow line
-                        setTimeout(() => {
-                            if (glowLine) glowLine.style.width = (pct * 100) + '%';
-                            if (dot) {
-                                dot.style.left = (pct * 100) + '%';
-                                dot.style.opacity = '1';
-                            }
-                        }, bi * 120 + 200);
-                    });
-                    obs.disconnect();
-                });
-            }, { threshold: 0.25 });
-
-            const skillSection = document.getElementById('skills');
-            if (skillSection) obs.observe(skillSection);
-        }
-
-        // ════════════════════════════
-        // SCROLL REVEALS
-        // ════════════════════════════
-        function initReveal() {
-            const obs = new IntersectionObserver(entries => {
-                entries.forEach((e, i) => {
-                    if (e.isIntersecting) {
-                        setTimeout(() => e.target.classList.add('visible'), i * 80);
-                    }
-                });
-            }, { threshold: .1 });
-            document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-        }
-
-        // ════════════════════════════
-        // MAGNETIC BUTTONS
-        // ════════════════════════════
-        function initMagnetic() {
-            document.querySelectorAll('.contact-big').forEach(el => {
-                el.addEventListener('mousemove', e => {
-                    const r = el.getBoundingClientRect();
-                    const x = (e.clientX - r.left - r.width / 2) * .15;
-                    const y = (e.clientY - r.top - r.height / 2) * .15;
-                    el.style.transform = `translate(${x}px,${y}px)`;
-                });
-                el.addEventListener('mouseleave', () => { el.style.transform = ''; });
-            });
-        }
-
-        // ════════════════════════════
-        // INIT ALL
-        // ════════════════════════════
-        function initAll() {
-            initWebGL();
-            initCursor();
-            initMarquee();
-            initPreviews();
-            initAbout();
-            initSkillBars();
-            initReveal();
-            initMagnetic();
-        }
     </script>
 </body>
 
